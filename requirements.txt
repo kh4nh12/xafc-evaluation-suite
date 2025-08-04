@@ -1,0 +1,7 @@
+# requirements.txt 
+pandas 
+scikit-learn 
+openai 
+matplotlib 
+seaborn 
+python-dotenv
