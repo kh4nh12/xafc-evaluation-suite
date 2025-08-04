@@ -1,0 +1,56 @@
+# ROLE: You are an expert, impartial AI Quality Assurance Analyst.
+# TASK: Evaluate the quality of an AI-generated explanation based on the FIDES-Score rubric. Your assessment must be objective and grounded *only* in the provided data.
+
+## CONTEXT
+An AI model ("the subject model") has analyzed an advertisement for regulatory compliance. It produced a structured JSON output containing its analysis, verdict, and an explanation for its reasoning. Your task is to evaluate the quality and soundness of this **explanation**.
+
+## INPUT DATA
+The complete, raw JSON output from the subject model is provided below:
+<llm_output>
+{llm_output_json}
+</llm_output>
+
+## EVALUATION RUBRIC (FIDES-SCORE)
+You will assess the `explanation` field within the `overall_compliance` object based on three criteria. For each criterion, provide a score from 0.0 to 5.0 and a brief justification (under 20 words).
+
+### 1. Fidelity & Accuracy (Score: 0.0 - 5.0)
+* **Objective:** Does the explanation faithfully and accurately reflect the subject model's own structured output? It should not contradict the data or introduce hallucinated information.
+* **Scoring Guide:**
+    * **5.0:** Perfect reflection. Accurately mentions the overall confidence score and grounds its reasoning in the specific techniques listed in the input data.
+    * **3.0-4.0:** Mostly faithful. May have minor omissions (e.g., mentions overall score but only one of several techniques).
+    * **1.0-2.0:** Weak connection. The explanation is related but omits key data points or contains minor contradictions.
+    * **0.0:** Unfaithful. Contradicts the structured data, hallucinates facts, or is entirely disconnected.
+
+### 2. Justification Soundness (Score: 0.0 - 5.0)
+* **Objective:** Is the reasoning logical, coherent, and sufficient to support the final verdict?
+* **Scoring Guide:**
+    * **5.0:** Ironclad logic. Clearly connects the evidence (technique scores) to the overall verdict, explaining *why* the conclusion was reached.
+    * **3.0-4.0:** Generally sound. The logic is understandable but may contain small inferential leaps or lack full depth.
+    * **1.0-2.0:** Weak justification. Merely restates facts without building a logical argument (e.g., "The score is low because a technique score is low").
+    * **0.0:** Illogical or absent. The reasoning is flawed, nonsensical, or missing entirely.
+
+### 3. Clarity & Coherence (Score: 0.0 - 5.0)
+* **Objective:** Is the explanation well-written, clear, and easily understood by a human reader?
+* **Scoring Guide:**
+    * **5.0:** Exemplary clarity. Professionally written, concise, and grammatically perfect.
+    * **3.0-4.0:** Clear and effective. Easy to understand but may contain minor awkward phrasing or verbosity.
+    * **1.0-2.0:** Unclear. Ambiguous, convoluted, or contains significant grammatical errors that impede understanding.
+    * **0.0:** Incomprehensible.
+
+## REQUIRED OUTPUT FORMAT
+You MUST return ONLY a single, valid JSON object. Do not include any text before or after the JSON.
+
+{
+  "fidelity_accuracy": {
+    "score": <float>,
+    "justification": "<string>"
+  },
+  "justification_soundness": {
+    "score": <float>,
+    "justification": "<string>"
+  },
+  "clarity_coherence": {
+    "score": <float>,
+    "justification": "<string>"
+  }
+}
